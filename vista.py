@@ -10,6 +10,7 @@ from tkinter import (
                         messagebox,
                         )
 from modelo import Abmc
+from observador import *
 
 class Ventana:
     def __init__(self, window):
@@ -22,6 +23,10 @@ class Ventana:
         self.cliente = StringVar()
         self.contacto_cliente = IntVar()
         self.busqueda_cliente = StringVar()
+
+        #observador
+        self.tema = TemaConcreto()
+        self.observador = ConcreteObserverA(self.tema)
 
         # Frame busqueda
         self.g = Frame(self.root)
@@ -54,7 +59,7 @@ class Ventana:
         self.etiqueta_contacto_cliente = Label(self.root, text="Contacto cliente : ")
         self.etiqueta_contacto_cliente.grid(row=4, column=1, padx=20, sticky="e")
 
-        self.etiqueta_registros = Label(self.root, text="Mostrar registros existentes", pady=5, bg="grey", fg="white", width=40)
+        self.etiqueta_registros = Label(self.root, text="Registros existentes", pady=5, bg="grey", fg="white", width=40)
         self.etiqueta_registros.grid(row=6, column=0, columnspan=4, padx=1, pady=1, sticky="w" + "e")
 
         self.etiqueta_busqueda = Label(self.root, text="Busqueda", pady=5, bg="grey", fg="white", width=40)
@@ -211,7 +216,7 @@ class Ventana:
         """
         if messagebox.askokcancel("Salida", "¿Desea salir de Biblioteca?"):
             self.root.destroy()
-            self.objeto_base.creacion_archivo_registro_texto()
+            self.tema.crear_txt()
 
     @staticmethod
     def validar_caracteres_espacio(text):

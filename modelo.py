@@ -46,20 +46,27 @@ def texto_formato_uper(texto):
 
 def registro_alta(funcion):
     def envoltura(*arg, **kargs):
-        # texto_registro = f"Alta : {arg[1].get()}, {arg[2].get()}, {arg[3].get()}, {arg[4].get()}"
-        # print(texto_registro)
+        texto_registro = f"Alta -> Titulo: {arg[1].get()}, "\
+                         f"Autor: {arg[2].get()}, "\
+                         f"Cliente: {arg[3].get()}, "\
+                         f"Contacto: {arg[4].get()}"
+        print(texto_registro)
        
         REGISTROS_ACUMULADOS.append(texto_registro)
         return funcion(*arg, **kargs)
     return envoltura
+
 
 def registro_baja(funcion):
     def envoltura(*arg, **kargs):
         item_seleccionado = arg[1].focus()
         valor_id = arg[1].item(item_seleccionado)
         datos_borrar = Biblioteca.get(Biblioteca.id == valor_id["text"])
-        # texto_registro = f"Baja : {datos_borrar.id}, {datos_borrar.titulo_libro}, {datos_borrar.autor_libro}, {datos_borrar.cliente}, {datos_borrar.contacto_cliente}"
-        # print(texto_registro)
+        texto_registro = f"Baja -> Titulo: {datos_borrar.titulo_libro}, "\
+                         f"Autor: {datos_borrar.autor_libro}, "\
+                         f"Cliente: {datos_borrar.cliente}, "\
+                         f"Contacto: {datos_borrar.contacto_cliente}, "
+        print(texto_registro)
        
         REGISTROS_ACUMULADOS.append(texto_registro)
         return funcion(*arg, **kargs)
@@ -67,8 +74,8 @@ def registro_baja(funcion):
 
 def registro_busqueda(funcion):
     def envoltura(*arg, **kargs):
-        # texto_registro = f"Busqueda : datos del cliente -> {arg[1].get()}"
-        # print(texto_registro)
+        texto_registro = f"Busqueda datos del cliente : {arg[1].get()}"
+        print(texto_registro)
         
         REGISTROS_ACUMULADOS.append(texto_registro)
         return funcion(*arg, **kargs)
@@ -152,25 +159,3 @@ class Abmc:
     def borrar_lista_buscar(self, mitreeview_busqueda):
         records = mitreeview_busqueda.get_children()
         self._limpieza_de_treeview(mitreeview_busqueda)
-
-    def creacion_archivo_registro_texto(self):
-        """
-        Crea un archivo con los registros acumulados cuando la ventana se cierra
-        mientras haya almenos una interaccion de alta, baja o busqueda.
-        """
-        ruta_nombre_archivo = self._ruta_nombre_archivo()
-  
-        if len(REGISTROS_ACUMULADOS) >= 1:
-            with open(f"{ruta_nombre_archivo}", "w") as archivo:
-                for reporte in REGISTROS_ACUMULADOS:
-                    archivo.write(reporte + "\n")
-
-    @staticmethod
-    def _ruta_nombre_archivo():
-        fecha_actual = datetime.now().strftime("%m%d%Y_%H%M%S%f")
-        nombre_archivo = f"{fecha_actual}_registros.txt" 
-        
-        directorio_actual = os.path.abspath(os.path.dirname(__file__))
-        ruta_carpeta_logs = os.path.join(directorio_actual, 'logs_biblioteca')
-
-        return os.path.join(ruta_carpeta_logs, nombre_archivo)

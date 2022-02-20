@@ -1,3 +1,7 @@
+from modelo import REGISTROS_ACUMULADOS
+from datetime import datetime
+import os
+
 class Tema:
 
     observadores = []
@@ -5,67 +9,39 @@ class Tema:
     def agregar(self, obj):
         self.observadores.append(obj)
 
-    def quitar(self, obj):
-        pass
-
     def notificar(self):
         for observador in self.observadores:
-            observador.update()
+            observador.archivo_txt()
 
 
 class TemaConcreto(Tema):
     def __init__(self):
-        self.estado = None
+        pass
 
-    def set_estado(self, value):
-        self.estado = value
+    def crear_txt(self):
         self.notificar()
-
-    def get_estado(self):
-        return self.estado
 
 
 class Observador:
-    def update(self):
-        raise NotImplementedError("Delegación de actualización")
+    def archivo_txt(self):
+        raise NotImplementedError("Delegación de creacion de texto")
 
 
 class ConcreteObserverA(Observador):
     def __init__(self, obj):
         self.observador_a = obj
-        #import pdb; pdb.set_trace()
-        self.observador_a.agregar(self)
-        #cuando se inicia se agrega la clase a la lista  
+        self.observador_a.agregar(self) 
 
-    def update(self):
-        print("Actualización dentro de ObservadorConcretoA")
-        self.estado = self.observador_a.get_estado()
-        print("Estado = ", self.estado)
+    def archivo_txt(self):
+        fecha_actual = datetime.now().strftime("%m%d%Y_%H%M%S%f")
+        nombre_archivo = f"{fecha_actual}_registros.txt" 
+        
+        directorio_actual = os.path.abspath(os.path.dirname(__file__))
+        ruta_carpeta_logs = os.path.join(directorio_actual, 'logs')
 
+        ruta_nombre_archivo = os.path.join(ruta_carpeta_logs, nombre_archivo)
 
-class ConcreteObserverB(Observador):
-    def __init__(self, obj):
-        self.observador_b = obj
-        self.observador_b.agregar(self)
-
-    def update(self):
-        print("Actualización dentro de ObservadorConcretoB")
-        self.estado = self.observador_b.get_estado()
-        print("Estado = ", self.estado)
-
-
-tema1 = TemaConcreto()
-observador_a = ConcreteObserverA(tema1)
-observador_b = ConcreteObserverB(tema1)
-tema1.set_estado(1)
-# print(observador_a.__dict__)
-print("---" * 25)
-print(Tema.__dict__)
-
-
-#para entender mejor
-#update es en metodo en el que finaliza y en el que se le puede poner una cierta utilidad
-#al definir tema1 tenemos una lista vacia observadores[]
-#instanciamos observador_a y se agrega observador_a  a la lista 
-#cuando se hace un tema1.set_estado(1) tambien se llama a notificar()
-#y notificar al iterar la lista hace un update y update es un metodo que esta definido en concreteObserverB y ahi termina 
+        if len(REGISTROS_ACUMULADOS) >= 1:
+            with open(f"{ruta_nombre_archivo}", "w") as archivo:
+                for reporte in REGISTROS_ACUMULADOS:
+                    archivo.write(reporte + "\n")
