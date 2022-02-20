@@ -1,0 +1,4 @@
+# agregar patron obeservador 
+logs con observador 
+archivo de texto con decorador 
+# validacion de datos iguales 
