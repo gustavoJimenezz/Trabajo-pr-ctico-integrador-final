@@ -196,6 +196,7 @@ class Ventana:
     
     def alta(self):
         entradas_vacias = self.entradas_vacias(self.titulo_libro, self.autor_libro, self.cliente ,self.contacto_cliente ,self.tree)
+        
         if entradas_vacias:
             self.aviso_entradas_vacias()
         else:
@@ -232,14 +233,9 @@ class Ventana:
     @staticmethod
     def entradas_vacias(*args):
         retorno = False
-
         for i in range(3):
             if len(args[i].get()) == 0:
                 retorno =  True
-        
-        if args[3].get() == 0:
-            retorno = True
-        
         return retorno
     
     @staticmethod

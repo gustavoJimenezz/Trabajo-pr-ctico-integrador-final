@@ -93,6 +93,15 @@ class Abmc:
     def iniciar_treeview(self, treeview, datos):
         self.actualizar_treeview(treeview, self.datos)
 
+    @staticmethod
+    def _limpieza_de_treeview(treeview):
+        """ 
+        Se encarga de limpiar el treeview actual
+        """
+        registros = treeview.get_children()
+        for elemento in registros:
+            treeview.delete(elemento)
+
     def actualizar_treeview(self, treeview, base_datos):
         """
         Actualiza el treeview que se desea actualizar.
@@ -114,30 +123,22 @@ class Abmc:
                                         ),
                                         tags=('odd',),
                                 )   
-    
-    @staticmethod
-    def _limpieza_de_treeview(treeview):
-        """ 
-        Se encarga de limpiar el treeview actual
-        """
-        registros = treeview.get_children()
-        for elemento in registros:
-            treeview.delete(elemento)
 
     @registro_alta
     def alta(self, titulo_libro, autor_libro, cliente, contacto_cliente, treeview):
         autor_libro = texto_formato_uper(autor_libro.get())
         cliente = texto_formato_uper(cliente.get())
 
-        biblioteca = Biblioteca()
-        biblioteca.titulo_libro = titulo_libro.get()
-        biblioteca.autor_libro = autor_libro
-        biblioteca.cliente = cliente
-        biblioteca.contacto_cliente = contacto_cliente.get()
-        biblioteca.save()
+        if not self.datos_duplicados(titulo_libro.get(), autor_libro, cliente):
+            biblioteca = Biblioteca()
+            biblioteca.titulo_libro = titulo_libro.get()
+            biblioteca.autor_libro = autor_libro
+            biblioteca.cliente = cliente
+            biblioteca.contacto_cliente = contacto_cliente.get()
+            biblioteca.save()
 
-        datos = biblioteca.select()
-        self.actualizar_treeview(treeview, datos)
+            datos = biblioteca.select()
+            self.actualizar_treeview(treeview, datos)
 
     @registro_baja
     def baja(self, mitreeview):
@@ -159,3 +160,12 @@ class Abmc:
     def borrar_lista_buscar(self, mitreeview_busqueda):
         records = mitreeview_busqueda.get_children()
         self._limpieza_de_treeview(mitreeview_busqueda)
+
+    @staticmethod
+    def datos_duplicados(titulo_libro, autor_libro, cliente):
+        biblioteca = Biblioteca.select()
+        for datos in biblioteca:
+            if datos.titulo_libro == titulo_libro and\
+                datos.autor_libro == autor_libro and\
+                datos.cliente == cliente:
+                return True
