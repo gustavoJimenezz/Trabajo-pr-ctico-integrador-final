@@ -1,0 +1,5 @@
+Alta -> Titulo: comedia, Autor: dante, Cliente: pepito, Contacto: 1122335544
+Alta -> Titulo: comedia, Autor: dante, Cliente: jose jose, Contacto: 1122335544
+Baja -> Titulo: comedia, Autor: Dante, Cliente: Jose Jose, Contacto: 1122335544, 
+Alta -> Titulo: comedia, Autor: dante, Cliente: Carlitos, Contacto: 34087042
+Busqueda datos del cliente : Carlitos
