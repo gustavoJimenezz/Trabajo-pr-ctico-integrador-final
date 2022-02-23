@@ -1,15 +1,20 @@
-from tkinter import (
-                        StringVar, 
-                        IntVar,
-                        Frame,
-                        Entry,
-                        Label,
-                        Button,
-                        Radiobutton,
-                        ttk,
-                        messagebox,
-                        )
 from modelo import Abmc
+from tools.herramientas import (
+    validar_caracteres_espacio,
+    validar_numeros,
+    entradas_vacias
+    )
+from tkinter import (
+    StringVar, 
+    IntVar,
+    Frame,
+    Entry,
+    Label,
+    Button,
+    Radiobutton,
+    ttk,
+    messagebox,
+    )
 from observador import *
 
 class Ventana:
@@ -81,7 +86,7 @@ class Ventana:
                             textvariable=self.autor_libro,
                             width=20, 
                             validate="key", 
-                            validatecommand= (self.root.register(self.validar_caracteres_espacio),"%S"), 
+                            validatecommand= (self.root.register(validar_caracteres_espacio),"%S"), 
                             invalidcommand=self.aviso_texto_incorrecto,
                             )
         self.Ent2.grid(row=2, column=2, padx=30, sticky="w")
@@ -91,7 +96,7 @@ class Ventana:
                             textvariable=self.cliente,
                             width=20,
                             validate="key",
-                            validatecommand= (self.root.register(self.validar_caracteres_espacio),"%S"),
+                            validatecommand= (self.root.register(validar_caracteres_espacio),"%S"),
                             invalidcommand=self.aviso_texto_incorrecto,
                             )
         self.Ent3.grid(row=3, column=2, padx=30, sticky="w")
@@ -101,7 +106,7 @@ class Ventana:
                             textvariable=self.contacto_cliente,
                             width=20,
                             validate="key",
-                            validatecommand=(self.root.register(self.validar_numeros), "%S"),
+                            validatecommand=(self.root.register(validar_numeros), "%S"),
                             invalidcommand=self.aviso_texto_incorrecto,
                             )
         self.Ent4.grid(row=4, column=2, padx=30, sticky="w")
@@ -111,7 +116,7 @@ class Ventana:
                                         textvariable=self.busqueda_cliente,
                                         width=20,
                                         validate="key",
-                                        validatecommand= (self.root.register(self.validar_caracteres_espacio),"%S"),
+                                        validatecommand= (self.root.register(validar_caracteres_espacio),"%S"),
                                         invalidcommand=self.aviso_texto_incorrecto,
                                         )
         self.Entrada_busqueda.grid(row=12, column=2, sticky="w")
@@ -195,9 +200,9 @@ class Ventana:
         self.root.protocol("WM_DELETE_WINDOW", self.creacion_texto_registro)
     
     def alta(self):
-        entradas_vacias = self.entradas_vacias(self.titulo_libro, self.autor_libro, self.cliente ,self.contacto_cliente ,self.tree)
+        vacio = entradas_vacias(self.titulo_libro, self.autor_libro, self.cliente ,self.contacto_cliente ,self.tree)
         
-        if entradas_vacias:
+        if vacio:
             self.aviso_entradas_vacias()
         else:
             self.objeto_base.alta(self.titulo_libro, self.autor_libro, self.cliente ,self.contacto_cliente ,self.tree)
@@ -219,25 +224,6 @@ class Ventana:
             self.root.destroy()
             self.tema.crear_txt()
 
-    @staticmethod
-    def validar_caracteres_espacio(text):
-        return text.isalpha() or text.isspace()
-
-    @staticmethod
-    def validar_numeros(num):
-        flag = False
-        if num in '0123456789-':
-            flag = True 
-        return flag 
-
-    @staticmethod
-    def entradas_vacias(*args):
-        retorno = False
-        for i in range(3):
-            if len(args[i].get()) == 0:
-                retorno =  True
-        return retorno
-    
     @staticmethod
     def aviso_texto_incorrecto():
         return messagebox.showinfo(message="Valor invalido", title="ingrece caracteres validos")

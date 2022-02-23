@@ -1,12 +1,13 @@
-from datetime import datetime
+from tools.herramientas import texto_formato_uper_sin_espacios
 from peewee import (
-                    Model, 
-                    CharField, 
-                    SqliteDatabase, 
-                    DateTimeField, 
-                    BooleanField,
-                    DecimalField
-                    )
+    Model, 
+    CharField, 
+    SqliteDatabase, 
+    DateTimeField, 
+    BooleanField,
+    DecimalField
+    )
+from datetime import datetime
 import sqlite3 
 import os
 
@@ -31,15 +32,6 @@ class Biblioteca(BaseModel):
     
 db.connect()
 db.create_tables([Biblioteca])
-
-def texto_formato_uper(texto):
-    texto_formateado = []
-    for palabra in texto.split(" "):
-        palabra = palabra.capitalize()
-        texto_formateado.append(palabra)
-
-    texto_terminado = " ".join(texto_formateado).rstrip()
-    return texto_terminado
 
 #decoradores de registro
 ##########################################################################
@@ -126,8 +118,8 @@ class Abmc:
 
     @registro_alta
     def alta(self, titulo_libro, autor_libro, cliente, contacto_cliente, treeview):
-        autor_libro = texto_formato_uper(autor_libro.get())
-        cliente = texto_formato_uper(cliente.get())
+        autor_libro = texto_formato_uper_sin_espacios(autor_libro.get())
+        cliente = texto_formato_uper_sin_espacios(cliente.get())
 
         if not self.datos_duplicados(titulo_libro.get(), autor_libro, cliente):
             biblioteca = Biblioteca()
@@ -153,7 +145,7 @@ class Abmc:
 
     @registro_busqueda
     def buscar(self, nombre_cliente, treeview_busqueda):
-        nombre_busqueda = texto_formato_uper(nombre_cliente.get())
+        nombre_busqueda = texto_formato_uper_sin_espacios(nombre_cliente.get())
         datos = Biblioteca.select().where(Biblioteca.cliente == nombre_busqueda)
         self.actualizar_treeview(treeview_busqueda, datos)
 
