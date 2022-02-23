@@ -1,3 +1,8 @@
-# Ignora todos los archivos de texto
-#logs/.txt
+#archivos de texto de registros
+logs/.txt
+
+#py cache
 *.pyc
+
+#virtualenv
+.env/

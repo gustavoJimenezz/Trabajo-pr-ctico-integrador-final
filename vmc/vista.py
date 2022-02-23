@@ -218,7 +218,7 @@ class Ventana:
 
     def creacion_texto_registro(self):
         """
-        Cuando se cierra la ventana se ejecutia destroy y el metodo creacion_archivo_registro_texto.
+        Cuando se cierra la ventana se ejecutia destroy y crear_txt.
         """
         if messagebox.askokcancel("Salida", "¿Desea salir de Biblioteca?"):
             self.root.destroy()
