@@ -1,4 +1,4 @@
-from modelo import REGISTROS_ACUMULADOS
+from vmc.modelo import REGISTROS_ACUMULADOS
 from datetime import datetime
 import os
 
@@ -36,9 +36,7 @@ class ConcreteObserverA(Observador):
         fecha_actual = datetime.now().strftime("%m%d%Y_%H%M%S%f")
         nombre_archivo = f"{fecha_actual}_registros.txt" 
         
-        directorio_actual = os.path.abspath(os.path.dirname(__file__))
-        ruta_carpeta_logs = os.path.join(directorio_actual, 'logs')
-
+        ruta_carpeta_logs = os.path.abspath("logs")
         ruta_nombre_archivo = os.path.join(ruta_carpeta_logs, nombre_archivo)
 
         if len(REGISTROS_ACUMULADOS) >= 1:

@@ -1,5 +1,5 @@
 from observer.observador import TemaConcreto, ConcreteObserverA
-from modelo import Abmc
+from vmc.modelo import Abmc
 from tools.herramientas import (
     validar_caracteres_espacio,
     validar_numeros,

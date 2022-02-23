@@ -1,5 +1,5 @@
 from tkinter import Tk
-from vista import Ventana
+from vmc.vista import Ventana
 
 class Controller:
     """
@@ -11,8 +11,8 @@ class Controller:
         self.objeto_vista = Ventana(self.root_controler)
 
 
-if __name__ == "__main__":
-    root_tk = Tk()
-    application = Controller(root_tk)
+# if __name__ == "__main__":
+#     root_tk = Tk()
+#     application = Controller(root_tk)
 
-    root_tk.mainloop()
+#     root_tk.mainloop()
