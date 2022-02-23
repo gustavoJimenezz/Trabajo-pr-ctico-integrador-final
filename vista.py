@@ -1,3 +1,4 @@
+from observer.observador import TemaConcreto, ConcreteObserverA
 from modelo import Abmc
 from tools.herramientas import (
     validar_caracteres_espacio,
@@ -15,7 +16,6 @@ from tkinter import (
     ttk,
     messagebox,
     )
-from observador import *
 
 class Ventana:
     def __init__(self, window):
