@@ -1,6 +1,10 @@
 Trabajo práctico integrador final
 =================================
 
+# Instalar dependencias
+    pip install -r requirements.txt
+
+
 # En la entrega incluye:
 
 1) ORM (con sqlite3)
