@@ -19,6 +19,8 @@ from tkinter import (
 
 class Ventana:
     def __init__(self, window):
+        self.COLUMNAS = ["#0", "col1", "col2", "col3", "col4", "col5", "col6"]
+
         self.root = window
         self.bandera = False
         self.titulo_libro = StringVar()
@@ -89,46 +91,38 @@ class Ventana:
     def configurar_boton(self, text, command, row, column, width=80, bg="gray", fg="white"):
         boton = Button(self.root, text=text, command=command, width=width, bg=bg, fg=fg)
         boton.grid(row=row, column=column)
+
+    # CONFIGURACIONES TREEE
     
     def configurar_tree_principal(self):
-        self.configurar_columnas_tree_principal()
-        self.configurar_encabezados()
+        columnas = self.COLUMNAS
+        self.configurar_columnas_tree_principal(columnas)
+        self.configurar_encabezados_tree_principal(columnas)
         self.tree.grid(row=10, column=0, columnspan=5, pady=10)
-    
  
-    def configurar_columnas_tree_principal(self):
-        self.tree["columns"] = ("col1", "col2", "col3", "col4", "col5", "col6")
-        self.configurar_columnas(self.tree)
-
-    @staticmethod
-    def configurar_columnas(tree):
-        columnas = ["#0", "col1", "col2", "col3", "col4", "col5", "col6"]
-
-        for col in columnas:
-            tree.column(col, width=200, minwidth=50, anchor="w")
+    def configurar_columnas_tree_principal(self, columnas):
+        self.tree["columns"] = self.COLUMNAS[1:]
+        self.configurar_columnas(self.tree, columnas)
             
-    def configurar_encabezados(self):
+    def configurar_encabezados_tree_principal(self, columnas):
         encabezados = ["ID", "Título", "Autor", "Cliente", "Contacto", "Fecha", "Mensaje"]
-        columnas = ["#0", "col1", "col2", "col3", "col4", "col5", "col6"]
-
-        for col, encabezado in zip(columnas, encabezados):
-            self.tree.heading(col, text=encabezado)
+        self.configurar_headings(self.tree, columnas, encabezados)
 
     def configurar_tree_busqueda(self):
-        self.configurar_columnas_busqueda()
-        self.configurar_encabezados_busqueda()
+        columnas = self.COLUMNAS[:5]
+        self.configurar_columnas_busqueda(columnas)
+        self.configurar_encabezados_busqueda(columnas)
         self.tree_busqueda.grid(row=14, column=0, columnspan=5, pady=10)
 
-    def configurar_columnas_busqueda(self):
-        self.tree_busqueda["columns"] = ("col1", "col2", "col3", "col4", "col5", "col6")
-        self.configurar_columnas(self.tree_busqueda)
+    def configurar_columnas_busqueda(self, columnas):
+        self.tree_busqueda["columns"] = self.COLUMNAS[1:5]
+        self.configurar_columnas(self.tree_busqueda, columnas)
 
-    def configurar_encabezados_busqueda(self):
+    def configurar_encabezados_busqueda(self, columnas):
         encabezados = ["ID", "Título", "Autor", "Cliente", "Contacto", "Fecha"]
-        columnas = ["#0", "col1", "col2", "col3", "col4", "col5"]
+        self.configurar_headings(self.tree_busqueda, columnas, encabezados)
 
-        for col, encabezado in zip(columnas, encabezados):
-            self.tree_busqueda.heading(col, text=encabezado)
+    ##
 
     def alta(self):
         vacio = entradas_vacias(self.titulo_libro, self.autor_libro, self.cliente ,self.contacto_cliente ,self.tree)
@@ -162,3 +156,13 @@ class Ventana:
     @staticmethod
     def aviso_entradas_vacias():
         return messagebox.showinfo(message="Complete los campos", title="Importante")
+
+    @staticmethod
+    def configurar_columnas(tree, columnas):
+        for col in columnas:
+            tree.column(col, width=200, minwidth=50, anchor="w")
+
+    @staticmethod
+    def configurar_headings(tree, columnas, encabezados):
+        for col, encabezado in zip(columnas, encabezados):
+            tree.heading(col, text=encabezado)

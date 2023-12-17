@@ -85,15 +85,6 @@ class Abmc:
     def iniciar_treeview(self, treeview, datos):
         self.actualizar_treeview(treeview, self.datos)
 
-    @staticmethod
-    def _limpieza_de_treeview(treeview):
-        """ 
-        Se encarga de limpiar el treeview actual
-        """
-        registros = treeview.get_children()
-        for elemento in registros:
-            treeview.delete(elemento)
-
     def actualizar_treeview(self, treeview, base_datos):
         """
         Actualiza el treeview que se desea actualizar.
@@ -161,3 +152,12 @@ class Abmc:
                 datos.autor_libro == autor_libro and\
                 datos.cliente == cliente:
                 return True
+    
+    @staticmethod
+    def _limpieza_de_treeview(treeview):
+        """ 
+        Se encarga de limpiar el treeview actual
+        """
+        registros = treeview.get_children()
+        for elemento in registros:
+            treeview.delete(elemento)
